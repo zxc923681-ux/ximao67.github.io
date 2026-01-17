@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>XMHUB 官方网</title>
+<style>
+    * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+        margin: 0;
+        background: #f2f4f8;
+        display: flex;
+        height: 100vh;
+    }
+
+    /* 左右主框架 */
+    .container {
+        display: flex;
+        width: 100%;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .left, .right {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 20px;
+    }
+
+    .left {
+        width: 40%;
+    }
+
+    .right {
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* 标题 */
+    .title {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    /* 左侧信息块 */
+    .info-box {
+        background: #f7f7f7;
+        border-radius: 16px;
+        padding: 15px;
+        margin-bottom: 15px;
+        font-size: 16px;
+    }
+
+    /* 右侧圆角卡片 */
+    .card {
+        background: #f7f7f7;
+        border-radius: 20px;
+        padding: 18px;
+    }
+
+    .qq-group {
+        font-size: 18px;
+        font-weight: bold;
+        color: #000;
+        text-align: right;
+    }
+
+    .update-time {
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    .author {
+        font-size: 18px;
+    }
+
+    .about {
+        line-height: 1.8;
+        font-size: 16px;
+    }
+
+    .features {
+        line-height: 1.8;
+        font-size: 16px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- 左侧 -->
+    <div class="left">
+        <div class="title">XMHUB 官方网</div>
+
+        <div class="info-box" id="beijingTime">
+            北京时间：加载中…
+        </div>
+
+        <div class="info-box">
+            澳大利亚 · 悉尼天气信息<br>
+            天气：晴 / 多云（示例）<br>
+            温度：25°C<br>
+            湿度：60%
+        </div>
+    </div>
+
+    <!-- 右侧 -->
+    <div class="right">
+
+        <div class="card qq-group">
+            QQ群：629525001
+        </div>
+
+        <div class="card update-time">
+            脚本更新时间：2026年1月12日
+        </div>
+
+        <div class="card author">
+            如果脚本出现问题联系作者 QQ：36611861
+        </div>
+
+        <div class="card about">
+            <b>关于我：</b><br>
+            XM 快手号：OvOximao<br>
+            一个普普通通的初中生脚本小白<br>
+            来自 XM 团队内部作者<br><br>
+            <b>代理人：</b><br>
+            胖猫游戏解说、茶壶、KiKi、xiaoxi、Seimental<br>
+            XM 代理成员，专作 ROBLOX 等服务器<br><br>
+            所在位置：悉尼<br>
+            方向：计算机编程
+        </div>
+
+        <div class="card features">
+            <b>脚本更新内容：</b><br>
+            自动戴口罩<br>
+            自动穿甲<br>
+            防看名字<br>
+            OHIO 印钞机脚本<br>
+            自动换服<br>
+            修复卡顿问题等服务器优化<br>
+            后续会加入更多功能与网站内容
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function updateBeijingTime() {
+        const now = new Date();
+        const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+        const beijing = new Date(utc + 8 * 3600000);
+
+        const y = beijing.getFullYear();
+        const m = String(beijing.getMonth() + 1).padStart(2, '0');
+        const d = String(beijing.getDate()).padStart(2, '0');
+        const h = String(beijing.getHours()).padStart(2, '0');
+        const min = String(beijing.getMinutes()).padStart(2, '0');
+        const s = String(beijing.getSeconds()).padStart(2, '0');
+
+        document.getElementById("beijingTime").innerText =
+            `北京时间：${y}-${m}-${d} ${h}:${min}:${s}`;
+    }
+
+    setInterval(updateBeijingTime, 1000);
+    updateBeijingTime();
+</script>
+
+</body>
+</html>
