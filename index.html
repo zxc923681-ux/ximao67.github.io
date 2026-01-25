@@ -2,176 +2,256 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>XMHUB 官方网</title>
+<title>XM HUB 官方官网</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-    * {
-        box-sizing: border-box;
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif;}
+body{
+background:linear-gradient(120deg,#0f0c29,#302b63,#24243e);
+color:#fff;
+min-height:100vh;
+overflow-x:hidden;
+}
 
-    body {
-        margin: 0;
-        background: #f2f4f8;
-        display: flex;
-        height: 100vh;
-    }
+/* 背景光效 */
+.bg-glow{
+position:fixed;
+width:400px;
+height:400px;
+background:radial-gradient(circle,rgba(255,0,255,.35),transparent 70%);
+filter:blur(120px);
+animation:move 12s infinite alternate;
+}
+@keyframes move{
+0%{transform:translate(0,0);}
+100%{transform:translate(300px,200px);}
+}
 
-    /* 左右主框架 */
-    .container {
-        display: flex;
-        width: 100%;
-        padding: 20px;
-        gap: 20px;
-    }
+/* 顶部 */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 30px;
+}
+.logo{
+font-size:28px;
+font-weight:800;
+letter-spacing:2px;
+background:linear-gradient(90deg,#ff00ff,#00ffff);
+-webkit-background-clip:text;
+color:transparent;
+}
+.qq{
+font-size:16px;
+}
 
-    .left, .right {
-        background: #ffffff;
-        border-radius: 20px;
-        padding: 20px;
-    }
+/* 主体卡片 */
+.container{
+max-width:1200px;
+margin:40px auto;
+padding:30px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(18px);
+border-radius:20px;
+animation:fadeIn 1.2s ease;
+}
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(40px);}
+to{opacity:1;transform:translateY(0);}
+}
 
-    .left {
-        width: 40%;
-    }
+h1{
+text-align:center;
+font-size:48px;
+margin-bottom:20px;
+}
+.subtitle{
+text-align:center;
+opacity:.9;
+margin-bottom:30px;
+font-size:18px;
+}
 
-    .right {
-        width: 60%;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
+/* 时间 */
+.time{
+text-align:center;
+margin-bottom:30px;
+font-size:16px;
+opacity:.8;
+}
 
-    /* 标题 */
-    .title {
-        font-size: 32px;
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
+/* 卡片区 */
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
+}
+.card{
+background:rgba(0,0,0,.35);
+padding:25px;
+border-radius:16px;
+transition:.3s;
+}
+.card:hover{
+transform:translateY(-8px);
+box-shadow:0 0 25px rgba(255,0,255,.3);
+}
+.card h3{
+margin-bottom:10px;
+color:#00ffff;
+}
 
-    /* 左侧信息块 */
-    .info-box {
-        background: #f7f7f7;
-        border-radius: 16px;
-        padding: 15px;
-        margin-bottom: 15px;
-        font-size: 16px;
-    }
+/* 价格 */
+.price{
+font-size:26px;
+margin:15px 0;
+color:#ff66ff;
+}
 
-    /* 右侧圆角卡片 */
-    .card {
-        background: #f7f7f7;
-        border-radius: 20px;
-        padding: 18px;
-    }
+/* 按钮 */
+.btn{
+display:inline-block;
+margin-top:10px;
+padding:10px 20px;
+border-radius:30px;
+background:linear-gradient(90deg,#ff00ff,#00ffff);
+color:#000;
+text-decoration:none;
+font-weight:bold;
+}
 
-    .qq-group {
-        font-size: 18px;
-        font-weight: bold;
-        color: #000;
-        text-align: right;
-    }
+/* 公告弹窗 */
+.modal{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,.6);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999;
+}
+.modal-content{
+background:rgba(30,30,50,.95);
+padding:30px;
+border-radius:20px;
+max-width:500px;
+text-align:center;
+animation:pop .6s ease;
+}
+@keyframes pop{
+from{transform:scale(.7);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+.close{
+margin-top:20px;
+cursor:pointer;
+color:#00ffff;
+}
 
-    .update-time {
-        font-size: 26px;
-        font-weight: bold;
-    }
-
-    .author {
-        font-size: 18px;
-    }
-
-    .about {
-        line-height: 1.8;
-        font-size: 16px;
-    }
-
-    .features {
-        line-height: 1.8;
-        font-size: 16px;
-    }
+/* 底部 */
+.footer{
+text-align:center;
+padding:30px;
+opacity:.8;
+font-size:14px;
+}
 </style>
 </head>
+
 <body>
+<div class="bg-glow"></div>
 
+<!-- 公告 -->
+<div class="modal" id="notice">
+<div class="modal-content">
+<h2>🎉 欢迎来到 XM HUB 官方官网首页</h2>
+<p style="margin-top:15px;">
+XM HUB 是专注于 ROBLOX 脚本开发的专业团队，  
+致力于打造高质量、稳定、好玩的功能型脚本。
+</p>
+<div class="close" onclick="closeNotice()">我知道了</div>
+</div>
+</div>
+
+<!-- 顶部 -->
+<div class="header">
+<div class="logo">XM HUB</div>
+<div class="qq">官方QQ群：629525001</div>
+</div>
+
+<!-- 主体 -->
 <div class="container">
+<h1>XM HUB 团队</h1>
+<div class="subtitle">ROBLOX 脚本开发 · Ohio 功能专家 · 自动化脚本平台</div>
 
-    <!-- 左侧 -->
-    <div class="left">
-        <div class="title">XMHUB 官方网</div>
+<div class="time">
+北京时间：<span id="bjtime"></span><br>
+脚本创建时间：2024年8月11日
+</div>
 
-        <div class="info-box" id="beijingTime">
-            北京时间：加载中…
-        </div>
+<h2>📌 团队与脚本介绍</h2>
+<p style="margin:15px 0;line-height:1.9;">
+XM HUB（细猫团队）是一个专注于 ROBLOX 脚本研发的技术团队，
+主打 OHIO 等热门服务器功能开发。  
+我们的脚本覆盖自动捡物品、刷钱挂机、自动任务、服务器切换、
+气球美化、皮肤美化、玩法辅助等多种功能，  
+适合新手与进阶玩家长期稳定使用。
+</p>
 
-        <div class="info-box">
-            澳大利亚 · 悉尼天气信息<br>
-            天气：晴 / 多云（示例）<br>
-            温度：25°C<br>
-            湿度：60%
-        </div>
-    </div>
+<h2>💰 脚本版本与价格</h2>
+<div class="cards">
+<div class="card">
+<h3>普通版</h3>
+<div class="price">¥25</div>
+<p>基础 OHIO 功能<br>自动捡物品 / 简单挂机</p>
+</div>
+<div class="card">
+<h3>高级版</h3>
+<div class="price">¥45</div>
+<p>完整功能解锁<br>刷钱 / 美化 / 高级逻辑</p>
+</div>
+<div class="card">
+<h3>V4 旗舰版</h3>
+<div class="price">¥45</div>
+<p>最新核心版本<br>持续更新 / 稳定优化</p>
+</div>
+</div>
 
-    <!-- 右侧 -->
-    <div class="right">
+<h2 style="margin-top:40px;">🛒 购买流程</h2>
+<p style="line-height:1.9;">
+① 点击下方联系 QQ  
+② 添加官方 QQ：366118610  
+③ 说明购买版本  
+④ 支付完成后获取脚本与使用说明  
+⑤ 加入官方交流群获取更新
+</p>
 
-        <div class="card qq-group">
-            QQ群：629525001
-        </div>
+<a class="btn" href="https://qm.qq.com/cgi-bin/qm/qr?k=YOURKEY&uin=366118610" target="_blank">
+👉 点击联系官方QQ
+</a>
+</div>
 
-        <div class="card update-time">
-            脚本更新时间：2026年1月12日
-        </div>
-
-        <div class="card author">
-            如果脚本出现问题联系作者 QQ：36611861
-        </div>
-
-        <div class="card about">
-            <b>关于我：</b><br>
-            XM 快手号：OvOximao<br>
-            一个普普通通的初中生脚本小白<br>
-            来自 XM 团队内部作者<br><br>
-            <b>代理人：</b><br>
-            胖猫游戏解说、茶壶、KiKi、xiaoxi、Seimental<br>
-            XM 代理成员，专作 ROBLOX 等服务器<br><br>
-            所在位置：悉尼<br>
-            方向：计算机编程
-        </div>
-
-        <div class="card features">
-            <b>脚本更新内容：</b><br>
-            自动戴口罩<br>
-            自动穿甲<br>
-            防看名字<br>
-            OHIO 印钞机脚本<br>
-            自动换服<br>
-            修复卡顿问题等服务器优化<br>
-            后续会加入更多功能与网站内容
-        </div>
-
-    </div>
-
+<!-- 底部 -->
+<div class="footer">
+XM脚本 · 细猫 · 代理胖猫 · kiki · 茶壶 · Seimental<br>
+© XM HUB 官方脚本团队
 </div>
 
 <script>
-    function updateBeijingTime() {
-        const now = new Date();
-        const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-        const beijing = new Date(utc + 8 * 3600000);
-
-        const y = beijing.getFullYear();
-        const m = String(beijing.getMonth() + 1).padStart(2, '0');
-        const d = String(beijing.getDate()).padStart(2, '0');
-        const h = String(beijing.getHours()).padStart(2, '0');
-        const min = String(beijing.getMinutes()).padStart(2, '0');
-        const s = String(beijing.getSeconds()).padStart(2, '0');
-
-        document.getElementById("beijingTime").innerText =
-            `北京时间：${y}-${m}-${d} ${h}:${min}:${s}`;
-    }
-
-    setInterval(updateBeijingTime, 1000);
-    updateBeijingTime();
+function closeNotice(){
+document.getElementById("notice").style.display="none";
+}
+function updateTime(){
+let now=new Date();
+let utc=now.getTime()+now.getTimezoneOffset()*60000;
+let bj=new Date(utc+3600000*8);
+document.getElementById("bjtime").innerText=bj.toLocaleString();
+}
+setInterval(updateTime,1000);
+updateTime();
 </script>
 
 </body>
