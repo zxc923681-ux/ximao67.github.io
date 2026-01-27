@@ -2,937 +2,216 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>XM HUB Official</title>
+<title>XM HUB 官方网站</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",Arial;}
+body{
+    background:
+        radial-gradient(circle at top,#2b1055,#000 70%),
+        linear-gradient(120deg,#ff00cc,#3333ff);
+    color:#fff;
+    overflow-x:hidden;
+}
+
+/* 顶部 */
+.header{
+    position:fixed;
+    top:0;left:0;width:100%;
+    padding:16px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(0,0,0,0.55);
+    backdrop-filter:blur(12px);
+    z-index:10;
+}
+.logo{
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:3px;
+}
+.qq{opacity:0.9}
+
+/* 首屏 */
+.hero{
+    padding-top:140px;
+    text-align:center;
+}
+.hero h1{
+    font-size:64px;
+    font-weight:900;
+    background:linear-gradient(270deg,#00ffff,#ff00ff,#00ff99,#00ffff);
+    background-size:600% 600%;
+    animation:flow 6s linear infinite;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+@keyframes flow{
+    0%{background-position:0%}
+    100%{background-position:100%}
+}
+.hero p{
+    margin-top:20px;
+    font-size:20px;
+    opacity:0.9;
+}
+
+/* 通用区块 */
+.section{
+    max-width:1200px;
+    margin:120px auto;
+    padding:50px;
+    background:rgba(0,0,0,0.45);
+    border-radius:24px;
+    animation:fadeUp 1s ease forwards;
+}
+@keyframes fadeUp{
+    from{transform:translateY(50px);opacity:0;}
+    to{transform:translateY(0);opacity:1;}
+}
+.section h2{
+    text-align:center;
+    font-size:34px;
+    margin-bottom:30px;
+    color:#00ffff;
+}
+.section p{
+    line-height:1.9;
+    font-size:17px;
+}
+
+/* 信息卡 */
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
+}
+.info-card{
+    background:rgba(255,255,255,0.08);
+    padding:30px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,0.2);
+    transition:0.3s;
+}
+.info-card:hover{
+    transform:translateY(-8px) scale(1.03);
+    box-shadow:0 0 30px rgba(0,255,255,0.4);
+}
+.info-card h3{
+    color:#ff7bff;
+    margin-bottom:10px;
+}
+
+/* 公告 */
+.notice-mask{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,0.75);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+.notice{
+    width:520px;
+    padding:35px;
+    border-radius:22px;
+    background:rgba(20,20,45,0.95);
+    text-align:center;
+    animation:pop 0.5s ease;
+    box-shadow:0 0 40px rgba(0,255,255,0.4);
+}
+@keyframes pop{
+    from{transform:scale(0.7);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+}
+.notice h2{color:#00ffff;margin-bottom:15px}
+.notice button{
+    margin-top:20px;
+    padding:10px 30px;
+    border:none;border-radius:25px;
+    background:linear-gradient(90deg,#00ffff,#ff00ff);
+    font-weight:bold;
+    cursor:pointer;
 }
-
-body {
-  background: radial-gradient(circle at top, #1b1440, #070712);
-  color: #fff;
-  font-family: "Poppins", sans-serif;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-/* ================== 右上角 QQ ================== */
-.top-right {
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 999;
-  font-size: 14px;
-  color: rgba(255,255,255,0.8);
-  background: rgba(0,0,0,0.35);
-  padding: 10px 12px;
-  border-radius: 12px;
-  backdrop-filter: blur(8px);
-}
-
-/* ================= 左上角 炫彩勾选按钮 ================= */
-.top-left-ui {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 999;
-}
-
-/* From Uiverse.io by gagan-gv */
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-.container {
-  display: block;
-  position: relative;
-  cursor: pointer;
-  font-size: 25px;
-  user-select: none;
-}
-
-.checkmark {
-  position: relative;
-  height: 1.3em;
-  width: 1.3em;
-  background: black;
-  border-radius: 50px;
-  transition: all 0.7s;
-  --spread: 18px;
-}
-
-.container input:checked ~ .checkmark {
-  background: black;
-  box-shadow:
-    -10px -10px var(--spread) 0px #5B51D8,
-    0 -10px var(--spread) 0px #833AB4,
-    10px -10px var(--spread) 0px #E1306C,
-    10px 0 var(--spread) 0px #FD1D1D,
-    10px 10px var(--spread) 0px #F77737,
-    0 10px var(--spread) 0px #FCAF45,
-    -10px 10px var(--spread) 0px #FFDC80;
-}
-
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-.container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-.container .checkmark:after {
-  left: 0.45em;
-  top: 0.25em;
-  width: 0.25em;
-  height: 0.5em;
-  border: solid #f0f0f0;
-  border-width: 0 0.15em 0.15em 0;
-  transform: rotate(45deg);
-}
-
-/* ================== 中央 Loader（dexter-st） ================== */
-.loader-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 120px;
-  width: auto;
-  margin: 2rem;
-  font-family: "Poppins", sans-serif;
-  font-size: 1.6em;
-  font-weight: 600;
-  user-select: none;
-  color: #fff;
-  scale: 2;
-}
-
-.loader {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 1;
-  background-color: transparent;
-  mask: repeating-linear-gradient(
-    90deg,
-    transparent 0,
-    transparent 6px,
-    black 7px,
-    black 8px
-  );
-}
-
-.loader::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(circle at 50% 50%, #ff0 0%, transparent 50%),
-    radial-gradient(circle at 45% 45%, #f00 0%, transparent 45%),
-    radial-gradient(circle at 55% 55%, #0ff 0%, transparent 45%),
-    radial-gradient(circle at 45% 55%, #0f0 0%, transparent 45%),
-    radial-gradient(circle at 55% 45%, #00f 0%, transparent 45%);
-  mask: radial-gradient(
-    circle at 50% 50%,
-    transparent 0%,
-    transparent 10%,
-    black 25%
-  );
-  animation:
-    transform-animation 2s infinite alternate,
-    opacity-animation 4s infinite;
-  animation-timing-function: cubic-bezier(0.6, 0.8, 0.5, 1);
-}
-
-@keyframes transform-animation {
-  0% { transform: translate(-55%); }
-  100% { transform: translate(55%); }
-}
-
-@keyframes opacity-animation {
-  0%, 100% { opacity: 0; }
-  15% { opacity: 1; }
-  65% { opacity: 0; }
-}
-
-.loader-letter {
-  display: inline-block;
-  opacity: 0;
-  animation: loader-letter-anim 4s infinite linear;
-  z-index: 2;
-}
-
-.loader-letter:nth-child(1) { animation-delay: 0.1s; }
-.loader-letter:nth-child(2) { animation-delay: 0.205s; }
-.loader-letter:nth-child(3) { animation-delay: 0.31s; }
-.loader-letter:nth-child(4) { animation-delay: 0.415s; }
-.loader-letter:nth-child(5) { animation-delay: 0.521s; }
-.loader-letter:nth-child(6) { animation-delay: 0.626s; }
-
-@keyframes loader-letter-anim {
-  0% { opacity: 0; }
-  5% {
-    opacity: 1;
-    text-shadow: 0 0 4px #fff;
-    transform: scale(1.1) translateY(-2px);
-  }
-  20% { opacity: 0.2; }
-  100% { opacity: 0; }
-}
-
-/* ================== 信息面板 ================== */
-.panel {
-  margin-top: 30px;
-  width: 460px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 18px;
-  padding: 20px;
-  backdrop-filter: blur(12px);
-}
-
-.panel h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.panel p {
-  font-size: 14px;
-  line-height: 1.7;
-  color: rgba(255,255,255,0.75);
-}
-
-.time {
-  margin-top: 8px;
-  font-size: 13px;
-  color: rgba(255,255,255,0.6);
-}
-
-/* ================== 购买区 ================== */
-.buy-section {
-  margin-top: 18px;
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-}
-
-.buy-card {
-  width: 140px;
-  height: 120px;
-  background: rgba(0,0,0,0.35);
-  border-radius: 16px;
-  padding: 12px;
-  border: 1px solid rgba(255,255,255,0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.buy-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-}
-
-.buy-card h3 {
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-
-.buy-card .price {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.buy-card .desc {
-  font-size: 12px;
-  color: rgba(255,255,255,0.65);
-}
-
-/* ================== 天气卡片（悉尼） ================== */
-.card {
-  margin-top: 22px;
-  width: 342px;
-  height: 184px;
-  position: relative;
-  padding: 20px;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-radius: 18px;
-  overflow: hidden;
-}
-
-.background {
-  background: linear-gradient(90deg, #5936B4 0%, #362A84 100%);
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-}
-
-.card .main-text {
-  font-size: 42px;
-  font-weight: bold;
-}
-
-.card .info {
-  display: flex;
-  justify-content: space-between;
-}
-
-.text-gray {
-  color: rgba(235,235,245,0.65);
-  font-size: 14px;
-}
-
-/* ================== 公告弹窗 ================== */
-.modal-bg {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.modal {
-  width: 520px;
-  background: rgba(20, 18, 35, 0.9);
-  border-radius: 18px;
-  padding: 20px;
-  border: 1px solid rgba(255,255,255,0.18);
-  backdrop-filter: blur(10px);
-  animation: modalIn 0.4s ease;
-}
-
-@keyframes modalIn {
-  from { transform: translateY(-20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.modal h2 {
-  margin-bottom: 10px;
-}
-
-.modal p {
-  font-size: 14px;
-  line-height: 1.7;
-  color: rgba(255,255,255,0.8);
-}
-
-.modal .btn {
-  margin-top: 16px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.modal button {
-  padding: 8px 14px;
-  border: none;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.12);
-  color: #fff;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.modal button:hover {
-  transform: translateY(-2px);
-}
-
-/* ================== 你要的 Tooltip 按钮（底部） ================== */
-/* From Uiverse.io by Mohammad-Rahme-576 */
-.tooltip-container {
-  position: fixed;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-block;
-  font-family: "Arial", sans-serif;
-  overflow: visible;
-  z-index: 999;
-}
-
-/* Button Styles */
-.button-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
-  color: white;
-  padding: 14px 28px;
-  border-radius: 50px;
-  cursor: pointer;
-  transition:
-    background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    transform 0.3s ease,
-    box-shadow 0.4s ease;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 10;
-  overflow: hidden;
-}
-
-.button-content::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    rgba(110, 142, 251, 0.4),
-    rgba(167, 119, 227, 0.4)
-  );
-  filter: blur(15px);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  z-index: -1;
-}
-
-.button-content::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.3) 0%,
-    rgba(255, 255, 255, 0) 70%
-  );
-  transform: scale(0);
-  transition: transform 0.6s ease-out;
-  z-index: -1;
-}
-
-.button-content:hover::before {
-  opacity: 1;
-}
-
-.button-content:hover::after {
-  transform: scale(1);
-}
-
-.button-content:hover {
-  background: linear-gradient(135deg, #a777e3, #6e8efb);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-  transform: translateY(-4px) scale(1.03);
-}
-
-.button-content:active {
-  transform: translateY(-2px) scale(0.98);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-}
-
-.text {
-  font-size: 18px;
-  font-weight: 600;
-  margin-right: 12px;
-  white-space: nowrap;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  transition: letter-spacing 0.3s ease;
-}
-
-.button-content:hover .text {
-  letter-spacing: 1px;
-}
-
-.share-icon {
-  fill: white;
-  transition:
-    transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-    fill 0.3s ease;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-}
-
-.button-content:hover .share-icon {
-  transform: rotate(180deg) scale(1.1);
-  fill: #ffffff;
-}
-
-/* Tooltip Styles */
-.tooltip-content {
-  position: absolute;
-  top: 102%;
-  left: 50%;
-  transform: translateX(-50%) scale(0.8);
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 15px;
-  padding: 22px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-    transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-    visibility 0.5s ease;
-  z-index: 100;
-  pointer-events: none;
-  backdrop-filter: blur(10px);
-}
-
-.tooltip-container:hover .tooltip-content {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) scale(1);
-  pointer-events: auto;
-}
-
-/* Tooltip Arrow */
-.tooltip-content::before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 0 10px 10px 10px;
-  border-style: solid;
-  border-color: transparent transparent rgba(255, 255, 255, 0.9) transparent;
-  filter: drop-shadow(0 -3px 3px rgba(0, 0, 0, 0.1));
-}
-
-/* Social Icons Styles */
-.social-icons {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.social-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #f0f0f0;
-  transition:
-    transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-    background 0.3s ease,
-    box-shadow 0.4s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-}
-
-.social-icon::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(255, 255, 255, 0) 70%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.social-icon:hover::before {
-  opacity: 1;
-}
-
-.social-icon svg {
-  width: 24px;
-  height: 24px;
-  fill: #333;
-  transition:
-    transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-    fill 0.3s ease;
-  z-index: 1;
-}
-
-.social-icon:hover {
-  transform: translateY(-5px) scale(1.1);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-.social-icon:active {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-
-.social-icon:hover svg {
-  transform: scale(1.2);
-  fill: white;
-}
-
-.social-icon.twitter:hover {
-  background: linear-gradient(135deg, #1da1f2, #1a91da);
-}
-
-.social-icon.facebook:hover {
-  background: linear-gradient(135deg, #1877f2, #165ed0);
-}
-
-.social-icon.linkedin:hover {
-  background: linear-gradient(135deg, #0077b5, #005e94);
-}
-
-/* Animation for Pulse Effect */
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(110, 142, 251, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 20px rgba(110, 142, 251, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(110, 142, 251, 0);
-  }
-}
-
-.button-content {
-  animation: pulse 3s infinite;
-}
-
-/* Hover Ripple Effect */
-@keyframes ripple {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
-.button-content::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: inherit;
-  transform: scale(0);
-  opacity: 0;
-}
-
-.button-content:active::before {
-  animation: ripple 0.6s linear;
-}
-
-/* Accessibility */
-.button-content:focus {
-  outline: none;
-  box-shadow:
-    0 0 0 3px rgba(110, 142, 251, 0.5),
-    0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-.button-content:focus:not(:focus-visible) {
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .button-content {
-    padding: 12px 24px;
-    border-radius: 40px;
-  }
-
-  .text {
-    font-size: 16px;
-  }
-
-  .tooltip-content {
-    width: 240px;
-    padding: 18px;
-  }
-
-  .social-icon {
-    width: 44px;
-    height: 44px;
-  }
-
-  .social-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .button-content {
-    padding: 10px 20px;
-  }
-
-  .text {
-    font-size: 14px;
-  }
-
-  .tooltip-content {
-    width: 200px;
-    padding: 15px;
-  }
-
-  .social-icon {
-    width: 40px;
-    height: 40px;
-  }
-
-  .social-icon svg {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .tooltip-content {
-    background: rgba(30, 30, 30, 0.9);
-    color: white;
-  }
-
-  .tooltip-content::before {
-    border-color: transparent transparent rgba(30, 30, 30, 0.9) transparent;
-  }
-
-  .social-icon {
-    background: #2a2a2a;
-  }
-
-  .social-icon svg {
-    fill: #e0e0e0;
-  }
-}
-
-/* Print Styles */
-@media print {
-  .tooltip-container {
-    display: none;
-  }
-}
-
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  .button-content,
-  .share-icon,
-  .social-icon,
-  .tooltip-content {
-    transition: none;
-  }
-
-  .button-content {
-    animation: none;
-  }
-}
-
-/* Custom Scrollbar for Tooltip Content */
-.tooltip-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.tooltip-content::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
-}
-
-.tooltip-content::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 3px;
-}
-
-.tooltip-content::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
 </style>
 </head>
 
 <body>
 
-<!-- 右上角 QQ -->
-<div class="top-right">
-  官方QQ群号：629525001
-</div>
-
-<!-- 左上角炫彩按钮 -->
-<div class="top-left-ui">
-  <label class="container">
-    <input type="checkbox">
-    <span class="checkmark"></span>
-  </label>
-</div>
-
-<!-- 公告弹窗 -->
-<div id="modalBg" class="modal-bg">
-  <div class="modal">
-    <h2>欢迎来到 XM HUB 官方官网首页</h2>
-    <p>
-      XM HUB 是一个 ROBLOX 脚本开发团队，专注 OHIO 服务器脚本功能，  
-      包含自动拾取、刷钱、挂机、美化气球、皮肤特效等功能。  
-      购买脚本请联系 QQ：366118610 或加入官方QQ群：629525001。
-    </p>
-    <div class="btn">
-      <button onclick="closeModal()">我知道了</button>
+<!-- 公告 -->
+<div class="notice-mask" id="notice">
+    <div class="notice">
+        <h2>欢迎来到 XM HUB 官方官网首页</h2>
+        <p>
+        XM HUB 是专注 ROBLOX Ohio 的脚本开发团队，  
+        提供稳定、自动化、娱乐与实用并存的脚本解决方案。
+        </p>
+        <button onclick="document.getElementById('notice').style.display='none'">
+            我知道了
+        </button>
     </div>
-  </div>
 </div>
 
-<!-- 中央内容 -->
-<div class="loader-wrapper">
-  <div class="loader"></div>
+<!-- 顶部 -->
+<div class="header">
+    <div class="logo">XM HUB</div>
+    <div class="qq">官方QQ群：629525001</div>
+</div>
 
-  <!-- XM HUB 动画字（已替换） -->
-  <div>
-    <span class="loader-letter">X</span>
-    <span class="loader-letter">M</span>
-    <span class="loader-letter"> </span>
-    <span class="loader-letter">H</span>
-    <span class="loader-letter">U</span>
-    <span class="loader-letter">B</span>
-  </div>
+<!-- 首屏 -->
+<div class="hero">
+    <h1>XM HUB 团队</h1>
+    <p>ROBLOX Script Hub · Ohio 专用 · 自动化解决方案</p>
+</div>
 
-  <!-- 信息区 -->
-  <div class="panel">
-    <h2>XM HUB Script Introduction</h2>
-    <p>
-      XM HUB 是一个 ROBLOX 脚本开发与整合团队，  
-      主打 OHIO 等服务器功能脚本，  
-      提供自动拾取、刷钱、自动挂机、美化气球、皮肤特效等玩法功能。  
-      团队成员：XM脚本 / 细猫 / 代理胖猫 / kiki / 茶壶 / Seimental
-    </p>
-
-    <div class="time" id="bjTime">北京时间：加载中...</div>
-    <div class="time">脚本创建时间：2024-08-11</div>
-
-    <!-- 购买流程 -->
-    <div class="buy-section">
-      <div class="buy-card">
-        <h3>普通版</h3>
-        <div class="price">25</div>
-        <div class="desc">基础功能：自动拾取 + 自动挂机</div>
-      </div>
-
-      <div class="buy-card">
-        <h3>高级版</h3>
-        <div class="price">45</div>
-        <div class="desc">额外功能：UI 美化 + 气球/皮肤特效</div>
-      </div>
-
-      <div class="buy-card">
-        <h3>V4 版本</h3>
-        <div class="price">定制</div>
-        <div class="desc">高级功能 + 服务器优化 + 专属支持</div>
-      </div>
-    </div>
-
-    <!-- 悉尼天气 -->
-    <div class="card">
-      <div class="background"></div>
-
-      <div class="main-text" id="weatherCity">
-        Sydney<br><span id="weatherTemp">--°C</span>
-      </div>
-
-      <div class="info">
-        <div>
-          <div class="text-gray" id="weatherDesc">Loading...</div>
-          <div class="text-gray">Australia</div>
+<!-- 项目信息 -->
+<div class="section">
+    <h2>项目信息</h2>
+    <div class="info-grid">
+        <div class="info-card">
+            <h3>🕒 当前北京时间</h3>
+            <p id="bjtime">加载中...</p>
         </div>
-        <div>
-          <div class="text-gray" id="weatherHumidity">Humidity --%</div>
-          <div class="text-gray" id="weatherWind">Wind -- m/s</div>
-        </div>
-      </div>
-    </div>
 
-  </div>
+        <div class="info-card">
+            <h3>📅 脚本创建时间</h3>
+            <p>2024 年 8 月 11 日</p>
+        </div>
+
+        <div class="info-card">
+            <h3>📌 项目类型</h3>
+            <p>ROBLOX Ohio 自动化脚本 / HUB 系统</p>
+        </div>
+
+        <div class="info-card">
+            <h3>👥 团队标识</h3>
+            <p>XM脚本 · 细猫 · 代理胖猫 · kiki · 茶壶 · Seimental</p>
+        </div>
+    </div>
 </div>
 
-<!-- 底部 Tooltip 按钮（QQ扫码弹窗） -->
-<div class="tooltip-container">
-  <div class="button-content">
-    <span class="text">联系作者</span>
-    <svg class="share-icon" viewBox="0 0 24 24">
-      <path d="M18 8a3 3 0 0 0-2.82 2H8.82A3 3 0 1 0 8 14h7.18A3 3 0 1 0 18 8zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-12 2a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM6 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm0 0a3 3 0 0 0 2.82-2h7.36A3 3 0 1 0 18 12H8.82A3 3 0 0 0 6 14z"/>
-    </svg>
-  </div>
-
-  <div class="tooltip-content">
-    <div style="font-weight:700; margin-bottom:8px;">XM HUB 官方联系</div>
-    <div style="font-size:13px; color:#333;">
-      QQ：366118610<br>
-      官方群：629525001<br>
-      支持：购买脚本 / 代理 / 更新 / 定制
-    </div>
-
-    <!-- 这里放 QQ 二维码 -->
-    <div style="margin-top: 12px; text-align:center;">
-      <img src="https://i.328888.xyz/2024/09/30/xxxxxxxx.png" alt="QQ二维码" style="width:180px; height:180px; border-radius:14px;">
-      <div style="font-size:12px; color:#333; margin-top:6px;">扫码添加 QQ：366118610</div>
-    </div>
-
-    <div class="social-icons" style="margin-top: 12px;">
-      <div class="social-icon twitter" onclick="openQQ()">
-        <svg viewBox="0 0 24 24"><path d="M22 5.9c-.8.4-1.6.6-2.5.8.9-.6 1.6-1.5 1.9-2.6-.8.5-1.7.9-2.7 1.1C18.2 4 17 3.5 15.7 3.5c-2.6 0-4.6 2.2-4.1 4.8-3.8-.2-7.2-2-9.5-4.9-1 1.7-.5 3.9 1.2 5-.7 0-1.4-.2-2-.6v.1c0 2.2 1.5 4.1 3.6 4.6-.7.2-1.5.3-2.3.1.6 1.9 2.3 3.3 4.4 3.4-2 .8-4 .8-6 .2 2.3 1.5 5.1 2.2 7.8 2.1 9.2 0 14.2-8 14.2-14.9v-.7c1-.7 1.9-1.6 2.6-2.6z"/></svg>
-      </div>
-      <div class="social-icon facebook">
-        <svg viewBox="0 0 24 24"><path d="M22 12c0-5.5-4.5-10-10-10S2 6.5 2 12c0 4.9 3.5 9 8.1 9.9v-7h-2.4v-2.9h2.4V9.5c0-2.4 1.4-3.7 3.6-3.7 1 0 2 .1 2 .1v2.3h-1.2c-1.2 0-1.6.8-1.6 1.6v1.9h2.7l-.4 2.9h-2.3v7C18.5 21 22 16.9 22 12z"/></svg>
-      </div>
-      <div class="social-icon linkedin">
-        <svg viewBox="0 0 24 24"><path d="M4.98 3.5c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zM.5 24h4.96V8.8H.5V24zM9.5 8.8V24h4.96v-7.2c0-4.2 5.6-4.5 5.6 0V24H25v-8.8c0-7.2-7.9-6.9-9.4-3.3V8.8H9.5z"/></svg>
-      </div>
-    </div>
-  </div>
+<!-- 底部 -->
+<div class="section" style="text-align:center">
+    <p>© XM HUB · ROBLOX Script Development Team</p>
 </div>
 
 <script>
-/* ---------------- 北京时间 ---------------- */
-function updateBJTime() {
-  const now = new Date();
-  const bj = new Date(now.getTime() + (8 - now.getTimezoneOffset() / 60) * 3600000);
-  document.getElementById("bjTime").innerText =
-    "北京时间：" + bj.toLocaleString();
+function updateBJTime(){
+    const now = new Date();
+    const bj = new Date(now.getTime() + (8 * 60 * 60 * 1000) - now.getTimezoneOffset() * 60000);
+    const y = bj.getFullYear();
+    const m = String(bj.getMonth()+1).padStart(2,'0');
+    const d = String(bj.getDate()).padStart(2,'0');
+    const h = String(bj.getHours()).padStart(2,'0');
+    const min = String(bj.getMinutes()).padStart(2,'0');
+    const s = String(bj.getSeconds()).padStart(2,'0');
+    document.getElementById("bjtime").innerText =
+        `${y}-${m}-${d} ${h}:${min}:${s}`;
 }
-setInterval(updateBJTime, 1000);
 updateBJTime();
-
-/* ---------------- 公告弹窗 ---------------- */
-function closeModal() {
-  document.getElementById("modalBg").style.display = "none";
-}
-
-/* ---------------- QQ跳转 ---------------- */
-function openQQ() {
-  window.location.href = "mqqwpa://im/chat?chat_type=wpa&uin=366118610&version=1&src_type=web";
-}
-
-/* ---------------- 天气 API（悉尼） ---------------- */
-const apiKey = "YOUR_API_KEY_HERE";
-const city = "Sydney";
-const url = `https://api.openweathermap.org/data/2.5/weather?q=${city},AU&units=metric&lang=en&appid=${apiKey}`;
-
-fetch(url)
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("weatherTemp").innerText = Math.round(data.main.temp) + "°C";
-    document.getElementById("weatherDesc").innerText = data.weather[0].description;
-    document.getElementById("weatherHumidity").innerText = "Humidity " + data.main.humidity + "%";
-    document.getElementById("weatherWind").innerText = "Wind " + data.wind.speed + " m/s";
-  })
-  .catch(err => {
-    document.getElementById("weatherDesc").innerText = "Weather load failed";
-    console.error(err);
-  });
+setInterval(updateBJTime,1000);
 </script>
 
 </body>
