@@ -32,7 +32,19 @@ body{
     font-weight:900;
     letter-spacing:3px;
 }
-.qq{opacity:0.9}
+.qq{
+    opacity:0.9;
+    cursor:pointer;
+    padding:8px 16px;
+    border-radius:20px;
+    background:linear-gradient(90deg,#00ffff,#ff00ff);
+    font-weight:bold;
+    transition:0.3s;
+}
+.qq:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 20px rgba(0,255,255,0.7);
+}
 
 /* 首屏 */
 .hero{
@@ -104,6 +116,24 @@ body{
     margin-bottom:10px;
 }
 
+/* 联系按钮 */
+.qq-btn{
+    margin-top:40px;
+    display:inline-block;
+    padding:14px 40px;
+    font-size:18px;
+    border-radius:30px;
+    background:linear-gradient(90deg,#00ffff,#ff00ff);
+    color:#000;
+    font-weight:900;
+    cursor:pointer;
+    transition:0.3s;
+}
+.qq-btn:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 30px rgba(0,255,255,0.8);
+}
+
 /* 公告 */
 .notice-mask{
     position:fixed;inset:0;
@@ -157,7 +187,7 @@ body{
 <!-- 顶部 -->
 <div class="header">
     <div class="logo">XM HUB</div>
-    <div class="qq">官方QQ群：629525001</div>
+    <div class="qq" onclick="openQQ()">联系 QQ：366118610</div>
 </div>
 
 <!-- 首屏 -->
@@ -190,6 +220,11 @@ body{
             <p>XM脚本 · 细猫 · 代理胖猫 · kiki · 茶壶 · Seimental</p>
         </div>
     </div>
+
+    <!-- QQ 联系按钮 -->
+    <div style="text-align:center">
+        <div class="qq-btn" onclick="openQQ()">👉 点击联系作者 QQ：366118610</div>
+    </div>
 </div>
 
 <!-- 底部 -->
@@ -198,6 +233,7 @@ body{
 </div>
 
 <script>
+/* 北京时间 */
 function updateBJTime(){
     const now = new Date();
     const bj = new Date(now.getTime() + (8 * 60 * 60 * 1000) - now.getTimezoneOffset() * 60000);
@@ -212,6 +248,18 @@ function updateBJTime(){
 }
 updateBJTime();
 setInterval(updateBJTime,1000);
+
+/* QQ 跳转 */
+function openQQ(){
+    // 优先唤起 QQ
+    window.location.href =
+      "mqqwpa://im/chat?chat_type=wpa&uin=366118610&version=1&src_type=web";
+
+    // 兜底：打不开就进 QQ 主页
+    setTimeout(()=>{
+        window.open("https://qm.qq.com/cgi-bin/qm/qr?k=366118610","_blank");
+    },800);
+}
 </script>
 
 </body>
