@@ -2,282 +2,147 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>XM HUB | ROBLOX 高级脚本商城</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>物理撞车模拟器</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-    font-family:"Segoe UI",Arial;
-    background:radial-gradient(circle at top,#1b1b3a,#0b0b16);
-    color:#fff;
-    overflow-x:hidden;
+body { margin: 0; overflow: hidden; }
+canvas { display: block; }
+#controls {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  background: rgba(0,0,0,0.5);
+  padding: 15px;
+  border-radius: 10px;
+  color: #fff;
+  font-family: sans-serif;
 }
-
-/* 动画 */
-@keyframes fadeUp{
-    from{opacity:0;transform:translateY(40px)}
-    to{opacity:1;transform:translateY(0)}
-}
-@keyframes glow{
-    0%{box-shadow:0 0 10px #4da6ff}
-    50%{box-shadow:0 0 30px #4da6ff}
-    100%{box-shadow:0 0 10px #4da6ff}
-}
-
-header{
-    padding:60px 20px;
-    text-align:center;
-    animation:fadeUp 1.2s ease;
-}
-header h1{
-    font-size:56px;
-    letter-spacing:4px;
-    color:#4da6ff;
-}
-header p{
-    margin-top:20px;
-    font-size:20px;
-    color:#ccc;
-}
-header img{
-    margin-top:20px;
-    width:80%;
-    max-width:800px;
-    border-radius:12px;
-    box-shadow:0 0 25px rgba(77,166,255,.4);
-    animation:fadeUp 1.5s ease;
-}
-
-.container{
-    max-width:1200px;
-    margin:auto;
-    padding:20px;
-}
-
-.section{
-    margin-bottom:70px;
-    animation:fadeUp 1.4s ease;
-}
-.section h2{
-    font-size:34px;
-    margin-bottom:20px;
-    color:#66b3ff;
-}
-.section p{
-    line-height:1.9;
-    color:#ddd;
-    margin-bottom:15px;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:20px;
-}
-.card{
-    background:#161633;
-    padding:25px;
-    border-radius:12px;
-    border:1px solid #2f2f5a;
-    transition:.3s;
-    text-align:center;
-}
-.card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 0 25px rgba(77,166,255,.4);
-}
-.card img{
-    width:60px;
-    margin-bottom:12px;
-}
-.card h3{color:#7cc3ff;margin-bottom:10px}
-
-/* 视频占位 */
-.video-box{
-    background:#0f0f22;
-    border:2px dashed #4da6ff;
-    border-radius:12px;
-    height:260px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:20px;
-    color:#4da6ff;
-}
-.video-box img{
-    max-height:100%;
-    border-radius:12px;
-}
-
-/* 购买区 */
-.buy{
-    background:#0f0f22;
-    border:2px solid #4da6ff;
-    padding:50px;
-    border-radius:20px;
-    text-align:center;
-    animation:glow 3s infinite;
-}
-.buy h2{font-size:38px;color:#4da6ff}
-
-.buy-btn{
-    display:inline-block;
-    margin:15px;
-    padding:18px 45px;
-    font-size:20px;
-    border-radius:50px;
-    background:linear-gradient(135deg,#4da6ff,#007bff);
-    color:#fff;
-    text-decoration:none;
-    transition:.3s;
-    cursor:pointer;
-}
-.buy-btn:hover{transform:scale(1.08)}
-
-.wechat-btn{
-    background:linear-gradient(135deg,#2ecc71,#27ae60);
-}
-
-/* 提示 */
-.toast{
-    position:fixed;
-    bottom:30px;
-    left:50%;
-    transform:translateX(-50%);
-    background:#2ecc71;
-    color:#fff;
-    padding:14px 30px;
-    border-radius:30px;
-    opacity:0;
-    pointer-events:none;
-    transition:.4s;
-}
-.toast.show{
-    opacity:1;
-    bottom:50px;
-}
-
-footer{
-    background:#080812;
-    padding:30px;
-    text-align:center;
-    margin-top:80px;
-    border-top:2px solid #2c2c55;
-}
-footer p{
-    color:#bbb;
-    margin:8px 0;
-    font-size:14px;
-}
+#controls label { display:block; margin:5px 0; }
 </style>
 </head>
-
 <body>
 
-<header>
-    <h1>XM HUB</h1>
-    <p>ROBLOX 高级脚本 | OHIO 自动刷印钞机 | 服务器级解决方案</p>
-    <!-- Banner 图片 -->
-    <img src="https://i.imgur.com/2j2N4UN.jpg" alt="XM HUB Banner">
-</header>
-
-<div class="container">
-
-    <div class="section">
-        <h2>XM HUB 是什么？</h2>
-        <p>
-            XM HUB 是一个专注于 ROBLOX 高级脚本的专业平台，
-            主打 OHIO 等服务器刷印钞机脚本，追求稳定、高效率与长期可用。
-        </p>
-        <p>
-            所有脚本均为高级版本，包含自动刷印钞机、智能换服、防检测机制、
-            可视化 UI 状态反馈，适合长期挂机与高强度刷取。
-        </p>
-    </div>
-
-    <div class="section">
-        <h2>核心功能</h2>
-        <div class="grid">
-            <div class="card">
-                <img src="https://i.imgur.com/QtgVd2C.png" alt="刷印钞机">
-                <h3>OHIO 自动刷印钞机</h3>
-                <p>全自动运行，无需人工操作。</p>
-            </div>
-            <div class="card">
-                <img src="https://i.imgur.com/Io6Xp7E.png" alt="换服系统">
-                <h3>高级换服系统</h3>
-                <p>智能筛选服务器，避免重复。</p>
-            </div>
-            <div class="card">
-                <img src="https://i.imgur.com/69R9nqB.png" alt="防检测">
-                <h3>稳定防检测</h3>
-                <p>模拟真实行为，长期稳定。</p>
-            </div>
-            <div class="card">
-                <img src="https://i.imgur.com/TqGqFzA.png" alt="UI显示">
-                <h3>状态 UI 显示</h3>
-                <p>实时反馈脚本运行状态。</p>
-            </div>
-            <div class="card">
-                <img src="https://i.imgur.com/8rJSFZV.png" alt="更新维护">
-                <h3>持续维护更新</h3>
-                <p>跟随 ROBLOX 更新同步维护。</p>
-            </div>
-            <div class="card">
-                <img src="https://i.imgur.com/0zC4Nzp.png" alt="售后">
-                <h3>作者本人售后</h3>
-                <p>QQ / 微信双渠道支持。</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>脚本运行演示</h2>
-        <div class="video-box">
-            <img src="https://i.imgur.com/3H8dp8G.png" alt="视频封面">
-        </div>
-    </div>
-
-    <div class="buy">
-        <h2>购买 XM HUB 高级脚本</h2>
-        <p style="margin-top:15px;color:#ddd">
-            ROBLOX 高级脚本 · OHIO 专用 · 自动刷印钞机 · 稳定长期可用
-        </p>
-
-        <!-- QQ 添加好友 / 聊天 -->
-        <a class="buy-btn" href="tencent://AddContact?uin=366118610">
-            💬 QQ 添加好友并聊天
-        </a>
-
-        <!-- 微信 -->
-        <div class="buy-btn wechat-btn" onclick="copyWechat()">
-            📱 微信购买（点击复制）
-        </div>
-
-        <p style="margin-top:15px;color:#aaa">
-            微信号：<b>George0131122</b>
-        </p>
-    </div>
-
+<div id="controls">
+  <label>方向盘：A / D</label>
+  <label>加速 / 后退：W / S</label>
 </div>
 
-<footer>
-    <p>XM HUB - ROBLOX 高级脚本交易平台</p>
-    <p>作者 QQ：366118610</p>
-    <p>购买脚本作者微信：George0131122</p>
-    <p>© 2026 XM HUB All Rights Reserved</p>
-</footer>
-
-<div class="toast" id="toast">✅ 微信号已复制：George0131122</div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js"></script>
 
 <script>
-function copyWechat(){
-    navigator.clipboard.writeText("George0131122");
-    const toast = document.getElementById("toast");
-    toast.classList.add("show");
-    setTimeout(()=>toast.classList.remove("show"),2000);
+// =================== 基础场景 ===================
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x87ceeb); // 天空蓝
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.set(0, 10, 20);
+camera.lookAt(0,0,0);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// 光源
+const ambient = new THREE.AmbientLight(0xffffff,0.6);
+scene.add(ambient);
+const dirLight = new THREE.DirectionalLight(0xffffff,0.8);
+dirLight.position.set(10,20,10);
+scene.add(dirLight);
+
+// =================== 地面 ===================
+const groundGeo = new THREE.BoxGeometry(100,1,100);
+const groundMat = new THREE.MeshStandardMaterial({color:0x555555});
+const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+groundMesh.position.y = -0.5;
+scene.add(groundMesh);
+
+// =================== 物理世界 ===================
+const world = new CANNON.World({gravity: new CANNON.Vec3(0,-9.82,0)});
+const groundBody = new CANNON.Body({
+  mass:0,
+  shape: new CANNON.Box(new CANNON.Vec3(50,0.5,50))
+});
+groundBody.position.set(0,-0.5,0);
+world.addBody(groundBody);
+
+// =================== 玩家车 ===================
+const carGeo = new THREE.BoxGeometry(2,1,4);
+const carMat = new THREE.MeshStandardMaterial({color:0xff0000});
+const carMesh = new THREE.Mesh(carGeo, carMat);
+scene.add(carMesh);
+
+const carShape = new CANNON.Box(new CANNON.Vec3(1,0.5,2));
+const carBody = new CANNON.Body({ mass: 150 });
+carBody.addShape(carShape);
+carBody.position.set(0,1,0);
+carBody.angularDamping = 0.5; // 阻尼
+world.addBody(carBody);
+
+// =================== 障碍物 ===================
+function addObstacle(x,z){
+    const boxGeo = new THREE.BoxGeometry(2,2,2);
+    const boxMat = new THREE.MeshStandardMaterial({color:0x00ff00});
+    const boxMesh = new THREE.Mesh(boxGeo, boxMat);
+    boxMesh.position.set(x,1,z);
+    scene.add(boxMesh);
+
+    const boxShape = new CANNON.Box(new CANNON.Vec3(1,1,1));
+    const boxBody = new CANNON.Body({mass:50});
+    boxBody.addShape(boxShape);
+    boxBody.position.set(x,1,z);
+    world.addBody(boxBody);
 }
+addObstacle(5,0);
+addObstacle(-5,-10);
+addObstacle(10,10);
+
+// =================== 控制 ===================
+let forward = false;
+let backward = false;
+let left = false;
+let right = false;
+
+document.addEventListener('keydown', (e)=>{
+    if(e.code === 'KeyW') forward = true;
+    if(e.code === 'KeyS') backward = true;
+    if(e.code === 'KeyA') left = true;
+    if(e.code === 'KeyD') right = true;
+});
+document.addEventListener('keyup', (e)=>{
+    if(e.code === 'KeyW') forward = false;
+    if(e.code === 'KeyS') backward = false;
+    if(e.code === 'KeyA') left = false;
+    if(e.code === 'KeyD') right = false;
+});
+
+// =================== 动画循环 ===================
+const clock = new THREE.Clock();
+function animate(){
+    requestAnimationFrame(animate);
+    const dt = clock.getDelta();
+
+    // 车子控制
+    const force = 500;
+    if(forward) carBody.applyLocalForce(new CANNON.Vec3(0,0,-force), new CANNON.Vec3(0,0,0));
+    if(backward) carBody.applyLocalForce(new CANNON.Vec3(0,0,force), new CANNON.Vec3(0,0,0));
+    if(left) carBody.angularVelocity.y += 1*dt*5;
+    if(right) carBody.angularVelocity.y -= 1*dt*5;
+
+    world.step(1/60, dt, 3);
+
+    // 更新车子位置
+    carMesh.position.copy(carBody.position);
+    carMesh.quaternion.copy(carBody.quaternion);
+
+    renderer.render(scene, camera);
+}
+animate();
+
+// =================== 调整窗口 ===================
+window.addEventListener('resize', ()=>{
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
 </script>
 
 </body>
