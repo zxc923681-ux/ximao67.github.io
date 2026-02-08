@@ -2,116 +2,158 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>物理撞车模拟器</title>
+<title>全物理车辆模拟器 - XM HUB</title>
 <style>
-body { margin: 0; overflow: hidden; }
-canvas { display: block; }
-#controls {
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  background: rgba(0,0,0,0.5);
-  padding: 15px;
-  border-radius: 10px;
-  color: #fff;
-  font-family: sans-serif;
+body { margin:0; overflow:hidden; background:#87ceeb; }
+canvas { display:block; }
+#instructions{
+  position:absolute; left:20px; top:20px; background:rgba(0,0,0,0.5); color:#fff; padding:15px; border-radius:10px; font-family:sans-serif;
+  width:250px;
 }
-#controls label { display:block; margin:5px 0; }
+#footer{
+  position:absolute; bottom:0; width:100%; text-align:center; background:rgba(0,0,0,0.5); color:#fff; padding:10px; font-family:sans-serif;
+}
 </style>
 </head>
 <body>
 
-<div id="controls">
-  <label>方向盘：A / D</label>
-  <label>加速 / 后退：W / S</label>
+<div id="instructions">
+  <h3>物理车辆模拟器</h3>
+  <p>控制方式：</p>
+  <ul>
+    <li>前进 / 后退：W / S</li>
+    <li>左右转向：A / D</li>
+  </ul>
+  <p>目标：在城市环境中驾驶，体验碰撞物理效果。</p>
+  <p>作者 QQ: <a href="tencent://message/?Menu=yes&Uin=366118610" style="color:#0ff;">366118610</a></p>
+  <p>作者微信: George0131122</p>
+</div>
+
+<div id="footer">
+  XM HUB - Roblox 脚本物理模拟学习网站
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js"></script>
 
 <script>
-// =================== 基础场景 ===================
+// =================== Three.js 场景 ===================
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x87ceeb); // 天空蓝
+scene.background = new THREE.Color(0x87ceeb);
+
+// 摄像机
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.set(0, 10, 20);
+camera.position.set(0,10,20);
 camera.lookAt(0,0,0);
 
+// 渲染器
 const renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // 光源
-const ambient = new THREE.AmbientLight(0xffffff,0.6);
-scene.add(ambient);
+scene.add(new THREE.AmbientLight(0xffffff,0.6));
 const dirLight = new THREE.DirectionalLight(0xffffff,0.8);
 dirLight.position.set(10,20,10);
 scene.add(dirLight);
 
+// =================== Cannon.js 物理 ===================
+const world = new CANNON.World({gravity: new CANNON.Vec3(0,-9.82,0)});
+world.broadphase = new CANNON.NaiveBroadphase();
+world.solver.iterations = 10;
+
 // =================== 地面 ===================
-const groundGeo = new THREE.BoxGeometry(100,1,100);
+const groundGeo = new THREE.BoxGeometry(200,1,200);
 const groundMat = new THREE.MeshStandardMaterial({color:0x555555});
 const groundMesh = new THREE.Mesh(groundGeo, groundMat);
 groundMesh.position.y = -0.5;
 scene.add(groundMesh);
 
-// =================== 物理世界 ===================
-const world = new CANNON.World({gravity: new CANNON.Vec3(0,-9.82,0)});
-const groundBody = new CANNON.Body({
-  mass:0,
-  shape: new CANNON.Box(new CANNON.Vec3(50,0.5,50))
-});
+const groundBody = new CANNON.Body({mass:0});
+groundBody.addShape(new CANNON.Box(new CANNON.Vec3(100,0.5,100)));
 groundBody.position.set(0,-0.5,0);
 world.addBody(groundBody);
 
-// =================== 玩家车 ===================
+// =================== 建筑物 ===================
+function addBuilding(x,z,w,h,d){
+    const geo = new THREE.BoxGeometry(w,h,d);
+    const mat = new THREE.MeshStandardMaterial({color:0x888888});
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(x,h/2,z);
+    scene.add(mesh);
+
+    const shape = new CANNON.Box(new CANNON.Vec3(w/2,h/2,d/2));
+    const body = new CANNON.Body({mass:0});
+    body.addShape(shape);
+    body.position.set(x,h/2,z);
+    world.addBody(body);
+}
+addBuilding(15,0,4,10,4);
+addBuilding(-15,-10,6,15,6);
+addBuilding(0,20,10,20,10);
+
+// =================== 障碍物 ===================
+function addObstacle(x,z){
+    const geo = new THREE.BoxGeometry(2,2,2);
+    const mat = new THREE.MeshStandardMaterial({color:0x00ff00});
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(x,1,z);
+    scene.add(mesh);
+
+    const shape = new CANNON.Box(new CANNON.Vec3(1,1,1));
+    const body = new CANNON.Body({mass:50});
+    body.addShape(shape);
+    body.position.set(x,1,z);
+    world.addBody(body);
+}
+addObstacle(5,0);
+addObstacle(-5,-10);
+addObstacle(10,10);
+addObstacle(20,-5);
+addObstacle(-15,15);
+
+// =================== 车辆 ===================
 const carGeo = new THREE.BoxGeometry(2,1,4);
 const carMat = new THREE.MeshStandardMaterial({color:0xff0000});
 const carMesh = new THREE.Mesh(carGeo, carMat);
 scene.add(carMesh);
 
 const carShape = new CANNON.Box(new CANNON.Vec3(1,0.5,2));
-const carBody = new CANNON.Body({ mass: 150 });
+const carBody = new CANNON.Body({mass:150});
 carBody.addShape(carShape);
 carBody.position.set(0,1,0);
-carBody.angularDamping = 0.5; // 阻尼
+carBody.angularDamping = 0.5;
 world.addBody(carBody);
 
-// =================== 障碍物 ===================
-function addObstacle(x,z){
-    const boxGeo = new THREE.BoxGeometry(2,2,2);
-    const boxMat = new THREE.MeshStandardMaterial({color:0x00ff00});
-    const boxMesh = new THREE.Mesh(boxGeo, boxMat);
-    boxMesh.position.set(x,1,z);
-    scene.add(boxMesh);
-
-    const boxShape = new CANNON.Box(new CANNON.Vec3(1,1,1));
-    const boxBody = new CANNON.Body({mass:50});
-    boxBody.addShape(boxShape);
-    boxBody.position.set(x,1,z);
-    world.addBody(boxBody);
+// 轮子（盒子）示意
+const wheels = [];
+for(let i=0;i<4;i++){
+    const wGeo = new THREE.BoxGeometry(0.6,0.6,0.3);
+    const wMat = new THREE.MeshStandardMaterial({color:0x111111});
+    const wheel = new THREE.Mesh(wGeo, wMat);
+    scene.add(wheel);
+    wheels.push(wheel);
 }
-addObstacle(5,0);
-addObstacle(-5,-10);
-addObstacle(10,10);
+const wheelOffsets = [
+    new CANNON.Vec3(-0.9,-0.5,1.5),
+    new CANNON.Vec3(0.9,-0.5,1.5),
+    new CANNON.Vec3(-0.9,-0.5,-1.5),
+    new CANNON.Vec3(0.9,-0.5,-1.5),
+];
 
 // =================== 控制 ===================
-let forward = false;
-let backward = false;
-let left = false;
-let right = false;
-
-document.addEventListener('keydown', (e)=>{
-    if(e.code === 'KeyW') forward = true;
-    if(e.code === 'KeyS') backward = true;
-    if(e.code === 'KeyA') left = true;
-    if(e.code === 'KeyD') right = true;
+let forward=false, backward=false, left=false, right=false;
+document.addEventListener('keydown',(e)=>{
+  if(e.code==='KeyW') forward=true;
+  if(e.code==='KeyS') backward=true;
+  if(e.code==='KeyA') left=true;
+  if(e.code==='KeyD') right=true;
 });
-document.addEventListener('keyup', (e)=>{
-    if(e.code === 'KeyW') forward = false;
-    if(e.code === 'KeyS') backward = false;
-    if(e.code === 'KeyA') left = false;
-    if(e.code === 'KeyD') right = false;
+document.addEventListener('keyup',(e)=>{
+  if(e.code==='KeyW') forward=false;
+  if(e.code==='KeyS') backward=false;
+  if(e.code==='KeyA') left=false;
+  if(e.code==='KeyD') right=false;
 });
 
 // =================== 动画循环 ===================
@@ -120,30 +162,39 @@ function animate(){
     requestAnimationFrame(animate);
     const dt = clock.getDelta();
 
-    // 车子控制
-    const force = 500;
+    // 车辆控制
+    const force = 600;
     if(forward) carBody.applyLocalForce(new CANNON.Vec3(0,0,-force), new CANNON.Vec3(0,0,0));
     if(backward) carBody.applyLocalForce(new CANNON.Vec3(0,0,force), new CANNON.Vec3(0,0,0));
-    if(left) carBody.angularVelocity.y += 1*dt*5;
-    if(right) carBody.angularVelocity.y -= 1*dt*5;
+    if(left) carBody.angularVelocity.y += dt*5;
+    if(right) carBody.angularVelocity.y -= dt*5;
 
     world.step(1/60, dt, 3);
 
-    // 更新车子位置
+    // 更新车身
     carMesh.position.copy(carBody.position);
     carMesh.quaternion.copy(carBody.quaternion);
 
-    renderer.render(scene, camera);
+    // 更新轮子位置
+    for(let i=0;i<4;i++){
+        wheels[i].position.copy(carBody.position.vadd(wheelOffsets[i]));
+        wheels[i].quaternion.copy(carBody.quaternion);
+    }
+
+    // 摄像机跟随
+    camera.position.lerp(new THREE.Vector3(carMesh.position.x, carMesh.position.y+10, carMesh.position.z+20),0.1);
+    camera.lookAt(carMesh.position);
+
+    renderer.render(scene,camera);
 }
 animate();
 
-// =================== 调整窗口 ===================
-window.addEventListener('resize', ()=>{
+// =================== 窗口自适应 ===================
+window.addEventListener('resize',()=>{
     camera.aspect = window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 </script>
-
 </body>
 </html>
