@@ -26,7 +26,7 @@ body{
 }
 
 header{
-    padding:80px 20px;
+    padding:60px 20px;
     text-align:center;
     animation:fadeUp 1.2s ease;
 }
@@ -39,6 +39,14 @@ header p{
     margin-top:20px;
     font-size:20px;
     color:#ccc;
+}
+header img{
+    margin-top:20px;
+    width:80%;
+    max-width:800px;
+    border-radius:12px;
+    box-shadow:0 0 25px rgba(77,166,255,.4);
+    animation:fadeUp 1.5s ease;
 }
 
 .container{
@@ -73,12 +81,34 @@ header p{
     border-radius:12px;
     border:1px solid #2f2f5a;
     transition:.3s;
+    text-align:center;
 }
 .card:hover{
     transform:translateY(-8px);
     box-shadow:0 0 25px rgba(77,166,255,.4);
 }
+.card img{
+    width:60px;
+    margin-bottom:12px;
+}
 .card h3{color:#7cc3ff;margin-bottom:10px}
+
+/* 视频占位 */
+.video-box{
+    background:#0f0f22;
+    border:2px dashed #4da6ff;
+    border-radius:12px;
+    height:260px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    color:#4da6ff;
+}
+.video-box img{
+    max-height:100%;
+    border-radius:12px;
+}
 
 /* 购买区 */
 .buy{
@@ -148,6 +178,8 @@ footer p{
 <header>
     <h1>XM HUB</h1>
     <p>ROBLOX 高级脚本 | OHIO 自动刷印钞机 | 服务器级解决方案</p>
+    <!-- Banner 图片 -->
+    <img src="https://i.imgur.com/2j2N4UN.jpg" alt="XM HUB Banner">
 </header>
 
 <div class="container">
@@ -167,12 +199,43 @@ footer p{
     <div class="section">
         <h2>核心功能</h2>
         <div class="grid">
-            <div class="card"><h3>OHIO 自动刷印钞机</h3><p>全自动运行，无需人工操作。</p></div>
-            <div class="card"><h3>高级换服系统</h3><p>智能筛选服务器，避免重复。</p></div>
-            <div class="card"><h3>稳定防检测</h3><p>模拟真实行为，长期稳定。</p></div>
-            <div class="card"><h3>状态 UI 显示</h3><p>实时反馈脚本运行状态。</p></div>
-            <div class="card"><h3>持续维护更新</h3><p>跟随 ROBLOX 更新同步维护。</p></div>
-            <div class="card"><h3>作者本人售后</h3><p>QQ / 微信双渠道支持。</p></div>
+            <div class="card">
+                <img src="https://i.imgur.com/QtgVd2C.png" alt="刷印钞机">
+                <h3>OHIO 自动刷印钞机</h3>
+                <p>全自动运行，无需人工操作。</p>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/Io6Xp7E.png" alt="换服系统">
+                <h3>高级换服系统</h3>
+                <p>智能筛选服务器，避免重复。</p>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/69R9nqB.png" alt="防检测">
+                <h3>稳定防检测</h3>
+                <p>模拟真实行为，长期稳定。</p>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/TqGqFzA.png" alt="UI显示">
+                <h3>状态 UI 显示</h3>
+                <p>实时反馈脚本运行状态。</p>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/8rJSFZV.png" alt="更新维护">
+                <h3>持续维护更新</h3>
+                <p>跟随 ROBLOX 更新同步维护。</p>
+            </div>
+            <div class="card">
+                <img src="https://i.imgur.com/0zC4Nzp.png" alt="售后">
+                <h3>作者本人售后</h3>
+                <p>QQ / 微信双渠道支持。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>脚本运行演示</h2>
+        <div class="video-box">
+            <img src="https://i.imgur.com/3H8dp8G.png" alt="视频封面">
         </div>
     </div>
 
