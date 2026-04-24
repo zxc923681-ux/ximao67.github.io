@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<script>
+if(localStorage.getItem("login")!=="true"){
+  window.location.href="login.html";
+}
+</script>
+
+<header>
+  <h2>Admin Dashboard</h2>
+  <a href="index.html">回首页</a>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>添加职位</h2>
+
+    <input id="title" placeholder="职位名称">
+    <input id="desc" placeholder="工作内容">
+
+    <button onclick="addJob()">添加</button>
+  </div>
+
+  <div class="card">
+    <h2>当前职位</h2>
+    <div id="list"></div>
+  </div>
+
+</div>
+
+<script>
+let jobs = JSON.parse(localStorage.getItem("jobs")) || [];
+
+function render(){
+  document.getElementById("list").innerHTML =
+  jobs.map((j,i)=>`
+    <p>
+      ${j.title}
+      <button onclick="del(${i})">删除</button>
+    </p>
+  `).join("");
+}
+render();
+
+function addJob(){
+  let t = document.getElementById("title").value;
+  let d = document.getElementById("desc").value;
+
+  jobs.push({title:t,desc:d});
+  localStorage.setItem("jobs",JSON.stringify(jobs));
+  render();
+}
+
+function del(i){
+  jobs.splice(i,1);
+  localStorage.setItem("jobs",JSON.stringify(jobs));
+  render();
+}
+</script>
+
+</body>
+</html>
